@@ -14,6 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import { IndiamartSearch } from '@/components/prices/indiamart-search';
 
 const SOURCES: PriceSource[] = ['IndiaMart', 'Phone call', 'Mandi', 'Other'];
 const UNITS: PriceUnit[] = ['kg', 'tonne', 'quintal', 'litre'];
@@ -100,6 +101,12 @@ export default function PricesPage() {
 
   const persist = (updated: PriceEntry[]) => { setPrices(updated); savePrices(updated); };
 
+  const handleImport = (entries: PriceEntry[]) => {
+    const updated = [...prices, ...entries];
+    persist(updated);
+    if (!selectedCommodity && entries.length > 0) setSelectedCommodity(entries[0].commodity);
+  };
+
   const handleSave = () => {
     if (!form.commodity.trim() || !form.price) return;
     const newEntry: PriceEntry = { id: generateId(), createdAt: new Date().toISOString(), ...form };
@@ -174,6 +181,9 @@ export default function PricesPage() {
           <Plus className="w-3 h-3" /> LOG PRICE
         </button>
       </div>
+
+      {/* IndiaMart scraper */}
+      <IndiamartSearch onImport={handleImport} />
 
       {/* Spread alerts */}
       {spreadAlerts.length > 0 && (
