@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0d0d0d;
+  --foreground: #e8e4d9;
+  --font-playfair: "Playfair Display", Georgia, serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --font-sans: system-ui, -apple-system, sans-serif;
+  --amber: #f5a623;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #111;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f5a623;
+}
+
+/* Selection */
+::selection {
+  background: #f5a62333;
+  color: #f5a623;
+}
+
+@layer utilities {
+  .font-serif {
+    font-family: var(--font-playfair);
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-amber {
+    color: var(--amber);
+  }
+}
+
+/* Verdict pulse animation */
+@keyframes verdict-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.verdict-buy {
+  color: #22c55e;
+}
+.verdict-wait {
+  color: #f5a623;
+}
+.verdict-avoid {
+  color: #ef4444;
+}
+
+/* Score bar animation */
+@keyframes fill-bar {
+  from { width: 0%; }
+  to { width: var(--target-width); }
+}
+
+.score-bar-fill {
+  animation: fill-bar 1s ease-out forwards;
+}
+
+/* Fade in up */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+.animate-delay-100 { animation-delay: 100ms; }
+.animate-delay-200 { animation-delay: 200ms; }
+.animate-delay-300 { animation-delay: 300ms; }
+.animate-delay-400 { animation-delay: 400ms; }
