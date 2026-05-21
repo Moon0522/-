@@ -1,58 +1,52 @@
-import type { FinancialProfile, PurchaseRequest, PurchaseResult } from "@/types";
+import type { Contact, Deal, PriceEntry } from '@/types';
 
-const PROFILE_KEY = "canibuyit_profile";
-const LAST_PURCHASE_KEY = "canibuyit_last_purchase";
-const LAST_RESULT_KEY = "canibuyit_last_result";
+const CONTACTS_KEY = 'tradedesk_contacts';
+const DEALS_KEY = 'tradedesk_deals';
+const PRICES_KEY = 'tradedesk_prices';
+const SEEDED_KEY = 'tradedesk_seeded';
 
-export function saveProfile(profile: FinancialProfile): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
-}
-
-export function loadProfile(): FinancialProfile | null {
-  if (typeof window === "undefined") return null;
-  const raw = localStorage.getItem(PROFILE_KEY);
-  if (!raw) return null;
+function load<T>(key: string): T[] {
+  if (typeof window === 'undefined') return [];
   try {
-    return JSON.parse(raw) as FinancialProfile;
+    const raw = localStorage.getItem(key);
+    return raw ? (JSON.parse(raw) as T[]) : [];
   } catch {
-    return null;
+    return [];
   }
 }
 
-export function clearProfile(): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(PROFILE_KEY);
+function save<T>(key: string, data: T[]): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(key, JSON.stringify(data));
 }
 
-export function saveLastPurchase(purchase: PurchaseRequest): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(LAST_PURCHASE_KEY, JSON.stringify(purchase));
+export function loadContacts(): Contact[] {
+  return load<Contact>(CONTACTS_KEY);
+}
+export function saveContacts(contacts: Contact[]): void {
+  save(CONTACTS_KEY, contacts);
 }
 
-export function loadLastPurchase(): PurchaseRequest | null {
-  if (typeof window === "undefined") return null;
-  const raw = localStorage.getItem(LAST_PURCHASE_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as PurchaseRequest;
-  } catch {
-    return null;
-  }
+export function loadDeals(): Deal[] {
+  return load<Deal>(DEALS_KEY);
+}
+export function saveDeals(deals: Deal[]): void {
+  save(DEALS_KEY, deals);
 }
 
-export function saveLastResult(result: PurchaseResult): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(LAST_RESULT_KEY, JSON.stringify(result));
+export function loadPrices(): PriceEntry[] {
+  return load<PriceEntry>(PRICES_KEY);
+}
+export function savePrices(prices: PriceEntry[]): void {
+  save(PRICES_KEY, prices);
 }
 
-export function loadLastResult(): PurchaseResult | null {
-  if (typeof window === "undefined") return null;
-  const raw = localStorage.getItem(LAST_RESULT_KEY);
-  if (!raw) return null;
-  try {
-    return JSON.parse(raw) as PurchaseResult;
-  } catch {
-    return null;
-  }
+export function isSeeded(): boolean {
+  if (typeof window === 'undefined') return false;
+  return localStorage.getItem(SEEDED_KEY) === 'true';
+}
+
+export function markSeeded(): void {
+  if (typeof window === 'undefined') return;
+  localStorage.setItem(SEEDED_KEY, 'true');
 }
